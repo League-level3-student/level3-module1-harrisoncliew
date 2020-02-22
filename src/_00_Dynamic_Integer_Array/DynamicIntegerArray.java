@@ -1,7 +1,8 @@
 package _00_Dynamic_Integer_Array;
 
 public class DynamicIntegerArray {
-	//1. Create a private int array. Don't initialize it.
+	// 1. Create a private int array. Don't initialize it.
+	private int[] nums;
 
 	public DynamicIntegerArray() {
 		// 2. Initialize the int array to have 0 elements.
