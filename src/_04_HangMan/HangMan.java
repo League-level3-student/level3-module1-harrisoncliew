@@ -23,7 +23,9 @@ public class HangMan implements KeyListener {
 	String livesword = lives + " lives				";
 	String blanks = "";
 	String shown;
-	String[] options = {"yes", "no"};	
+	int score = 0;
+	String[] options = { "yes", "no" };
+	int x = 2;
 
 	void start() {
 		String yeet = JOptionPane.showInputDialog("How many rounds of hangman would you like to play?");
@@ -59,7 +61,6 @@ public class HangMan implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int index = 0;
-		int counter = 0;
 		char letter = e.getKeyChar();
 		StringBuilder sb = new StringBuilder(blanks);
 		if (currentWord.contains(letter + "")) {
@@ -68,34 +69,67 @@ public class HangMan implements KeyListener {
 				sb.setCharAt(index, letter);
 				index++;
 				blanks = sb.toString();
-				counter++;
-			}
-			label.setText(livesword + blanks);
-			frame.pack();
-			
-			
-		} else {
-			lives--;
-			label.setText(livesword + blanks);
-			int x= 1;
-			frame.pack();
-			if(lives==0){
-				livesword = lives + " lives				";
-				label.setText("GAME OVER");
-				frame.pack();
-				x = JOptionPane.showOptionDialog(null, "Would you like to play again?",
-                "Click a button",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-				System.out.println(x);
-			}
-			if(x==0) {
-				start();
-				lives = 6;
-				setup();
 				
 			}
-			
+			label.setText(livesword + blanks);
+			frame.pack();
 		}
+
+		if (blanks.equals(currentWord) == true) {
+			score++;
+			JOptionPane.showMessageDialog(null, "GOOD JOB!");
+			if (stack.isEmpty() == false) {
+				currentWord = stack.pop();
+				blanks = "";
+			for (int i = 0; i < currentWord.length(); i++) {
+				blanks = blanks + "_";
+			}
+			lives = 6;
+			livesword = lives + " lives				";
+			label.setText(livesword + blanks);
+			frame.pack();
+			} else {
+			label.setText("GAME OVER");
+			frame.pack();
+			x = JOptionPane.showOptionDialog(null, "You got "+score+" out of "+numOfWords+" correct. Would you like to play again?", "Click a button",
+					JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+			System.out.println(x);
+		} 
+		} else if (currentWord.contains(letter + "") == false) {
+			lives -= 1;
+			livesword = lives + " lives				";
+			label.setText(livesword + blanks);
+			frame.pack();
+			if (lives == 0 && stack.isEmpty()) {
+				label.setText("GAME OVER");
+				frame.pack();
+				x = JOptionPane.showOptionDialog(null, "The correct answer was "+currentWord+". You got "+score+" out of "+numOfWords+" correct. Would you like to play again?", "Click a button",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+				System.out.println(x);
+			} else if (lives == 0 && stack.isEmpty()==false) {
+					
+					JOptionPane.showMessageDialog(null, "INCORRECT! The correct answer was "+currentWord+".");
+					currentWord = stack.pop();
+					blanks = "";
+					for (int i = 0; i < currentWord.length(); i++) {
+						blanks = blanks + "_";
+					}
+					lives = 6;
+					livesword = lives + " lives				";
+					label.setText(livesword + blanks);
+					frame.pack();
+				}
+			}
+		
+		if (x == 0) {
+			blanks = "";
+			lives = 6;
+			livesword = lives + " lives				";
+			start();
+			setup();
+
+		}
+
 	}
 
 	@Override
