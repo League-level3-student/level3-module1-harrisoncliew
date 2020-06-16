@@ -26,6 +26,7 @@ public class HangMan implements KeyListener {
 	int score = 0;
 	String[] options = { "yes", "no" };
 	int x = 2;
+	int decrease = 1;
 
 	void start() {
 		String yeet = JOptionPane.showInputDialog("How many rounds of hangman would you like to play?");
@@ -96,7 +97,7 @@ public class HangMan implements KeyListener {
 			System.out.println(x);
 		} 
 		} else if (currentWord.contains(letter + "") == false) {
-			lives -= 1;
+			lives-=decrease;
 			livesword = lives + " lives				";
 			label.setText(livesword + blanks);
 			frame.pack();
@@ -127,6 +128,8 @@ public class HangMan implements KeyListener {
 			livesword = lives + " lives				";
 			start();
 			setup();
+			x=1;
+			decrease =1;
 
 		}
 
